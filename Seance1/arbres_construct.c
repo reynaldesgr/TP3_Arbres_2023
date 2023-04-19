@@ -149,7 +149,21 @@ void afficheArbre(cell_lvlh_t * root)
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
-//  libererArbre()
-// {
-// // TO DO
-// }
+void libererArbre(cell_lvlh_t ** adrPtRacine)
+{
+    cell_lvlh_t * cour;
+
+    if (*adrPtRacine)
+    {
+        cour = *adrPtRacine;
+        if (cour->lv){
+            libererArbre(&cour->lv);
+        }
+        
+        free(cour);
+
+        if(cour->lh){
+            libererArbre(&cour->lh);
+        }
+    }
+}
