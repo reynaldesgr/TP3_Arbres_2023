@@ -96,9 +96,6 @@ cell_lvlh_t * allocPoint(int val)
  *     - l'adresse de la racine de l'arbre sinon
 */
 
-
-
-
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
   cell_lvlh_t * cell = NULL;
