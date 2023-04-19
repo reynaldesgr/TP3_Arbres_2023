@@ -134,7 +134,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
   return cell;
 }
 
-// Affichage postfixe
+// Affichage prefixe
 void afficheArbre(cell_lvlh_t * root)
 {
     if (root){
