@@ -9,7 +9,7 @@
 #include "../eltsArbre.h"
 #include "../Seance1/arbres_construct.h"
 #include "arbres_parcours.h"
-#include "../../teZZt.h"
+#include "../teZZt.h"
 
 
 BEGIN_TEST_GROUP(ARBRE_PARCOURS)
@@ -26,7 +26,7 @@ TEST(nouvCell) {
 	free(new);
 }
 
-/*
+
 TEST(getNbFils_ou_Freres) {
 	int nbRacines = 0;
 	int nbEltsPref = 0;
@@ -44,25 +44,26 @@ TEST(getNbFils_ou_Freres) {
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
 	REQUIRE( NULL != racine );
-//	printf("A = %c\n", racine->val);
+	printf("A = %c\n", racine->val);
 	CHECK( 2 == getNbFils_ou_Freres(racine) );     // 2 freres y compris lui-meme
 	CHECK( 3 == getNbFils_ou_Freres(racine->lv) ); // 3 fils
 
 	REQUIRE( NULL != racine->lv );
-//	printf("B = %c\n", racine->lv->val);
+	printf("B = %c\n", racine->lv->val);
 	CHECK( 3 == getNbFils_ou_Freres(racine->lv) );     // 3 freres y compris lui-meme
 	CHECK( 2 == getNbFils_ou_Freres(racine->lv->lv) ); // 2 fils
 
 	REQUIRE( NULL != racine->lv->lh );
-//	printf("D = %c\n", racine->lv->lh->val);
+	printf("D = %c\n", racine->lv->lh->val);
 	CHECK( 0 == getNbFils_ou_Freres(racine->lv->lh->lv) ); // 0 fils
 
 	REQUIRE( NULL != racine->lv->lh->lh );
-//	printf("H = %c\n", racine->lv->lh->lh->val);
+	printf("H = %c\n", racine->lv->lh->lh->val);
 	CHECK( 1 == getNbFils_ou_Freres(racine->lv->lh->lh->lv) ); // 1 fils
 
 	libererArbre(&racine);
 }
+
 
 TEST(printPostfixee) {
 	int nbRacines = 0;
@@ -87,7 +88,7 @@ TEST(printPostfixee) {
 	
 	libererArbre(&racine);
 }
-*/
+
 
 END_TEST_GROUP(ARBRE_PARCOURS)
 
