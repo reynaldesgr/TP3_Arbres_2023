@@ -231,7 +231,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 */
 
 
-/* **** Fonctions annexe ***** */
+/* **** Fonctions annexes ***** */
 // Affichage prefixe
 void affichePrefArbre(cell_lvlh_t * root)
 {
