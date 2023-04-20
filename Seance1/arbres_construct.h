@@ -7,7 +7,7 @@
 
 #include "../eltsArbre.h"
 
-/** TO DO
+/** lirePref_fromFileName
  * @brief lire le fichier contenant la representation prefixee de l'arborescence
  * @param [in] fileName le nom du fichier contenant la representation prefixee
  * @param [in, out] tabEltPref tableau des elements de la representation prefixee
@@ -16,7 +16,7 @@
  */
 int lirePref_fromFileName(char *, eltPrefPostFixee_t *, int *);
 
-/** TO DO
+/** printTabEltPref
  * @brief afficher les elements de la representation prefixee sur un flux de sortie
  * @param file : le flux de sortie
  * @param [in, out] tabEltPref tableau des elements de la representation prefixee
@@ -24,14 +24,14 @@ int lirePref_fromFileName(char *, eltPrefPostFixee_t *, int *);
  */
 void printTabEltPref(FILE *, eltPrefPostFixee_t *, int);
 
-/** TO DO
+/** allocPoint
  * @brief creer et initialiser un nouveau point de l'arborescence
  * @param [in] val la valeur du point de type char
  * @return l'adresse du nouveau point 
  */
 cell_lvlh_t * allocPoint(int);
 
-/**
+/** pref2lvlh
  * @brief construire un arbre avec lvlh a partir de representation prefixee
  * @param [in] tabEltPref tableau des elements de la representation prefixee
  * @param [in] nbRacines nombre de racines de l'arborescence
@@ -41,7 +41,7 @@ cell_lvlh_t * allocPoint(int);
 */
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t *, int);
 
-/** TO DO
+/** libererArbre
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */

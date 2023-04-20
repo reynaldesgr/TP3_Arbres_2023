@@ -11,7 +11,8 @@
 
 //static int index = 0;
 
-/**
+
+/** lirePref_fromFileName
  * @brief lire le fichier contenant la representation prefixee de l'arborescence
  * @param [in] fileName le nom du fichier contenant la representation prefixee
  * @param [in, out] tabEltPref tableau des elements de la representation prefixee
@@ -39,7 +40,7 @@ int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int 
     return nbRacines;
 }
 
-/** TO DO
+/** printTabEltPref
  * @brief afficher les elements de la representation prefixee sur un flux de sortie
  * @param file : le flux de sortie
  * @param [in, out] tabEltPref tableau des elements de la representation prefixee
@@ -67,7 +68,7 @@ void printTabEltPref(FILE * file, eltPrefPostFixee_t * tabEltPref, int nbEltsPre
     }
 }
 
-/** TO DO
+/** allocPoint
  * @brief creer et initialiser un nouveau point de l'arborescence
  * @param [in] val la valeur du point
  * @return l'adresse du nouveau point 
@@ -89,7 +90,7 @@ cell_lvlh_t * allocPoint(int val)
 
 
 
-/** TO DO
+/** preflÉlvlh
  * @brief construire un arbre avec lvlh a partir de representation prefixee
  * @param [in] tabEltPref tableau des elements de la representation prefixee
  * @param [in] nbRacines nombre de racines de l'arborescence
@@ -97,6 +98,9 @@ cell_lvlh_t * allocPoint(int val)
  *     - NULL si l'arbre resultant est vide
  *     - l'adresse de la racine de l'arbre sinon
 */
+
+
+// Iteratif (Pile)
 
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
@@ -191,6 +195,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 
 /*
 // pref2lvlh récursif
+
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
   cell_lvlh_t * cell = NULL;
@@ -219,8 +224,6 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             cell->lh = pref2lvlh(tabEltPref, nbRacines);
         }
 
-
-
     }else{
         cell = allocPoint(tabEltPref[index].val);
         cell->lv = NULL;
@@ -243,7 +246,7 @@ void affichePrefArbre(cell_lvlh_t * root)
     
 }
 
-
+// Affichage prefixe dans un flux de sortie
 void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root){
     if (root){
         fprintf(file, "%c ", root->val);
@@ -253,7 +256,7 @@ void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root){
 }
 /********************************/
 
-/** TO DO
+/** libererArbre
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
