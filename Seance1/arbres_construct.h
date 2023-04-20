@@ -49,7 +49,7 @@ void libererArbre(cell_lvlh_t **);
 
 
 
-// Fonctions annexe
+// Fonctions annexes
 void affichePrefArbre(cell_lvlh_t *);
 void affichePrefArbre_Fichier(FILE *, cell_lvlh_t *);
 
