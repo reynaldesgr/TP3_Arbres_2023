@@ -87,7 +87,11 @@ TEST(pref2lvlh1_exTP) {
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
 
 	racine = pref2lvlh(tabEltPref, nbRacines);
-	afficheArbre(racine);
+	
+	affichePrefArbre_Fichier(file, racine);
+	fclose(file);
+	
+	CHECK (0 == strcmp(buffer, "A B E J D H G C F K M T I "));
 }
 
 END_TEST_GROUP(ARBRE_CONSTRUCT)

@@ -9,7 +9,7 @@
 #include "../eltsArbre.h"
 #include "arbres_construct.h"
 
-static int index = 0;
+//static int index = 0;
 
 /**
  * @brief lire le fichier contenant la representation prefixee de l'arborescence
@@ -87,15 +87,110 @@ cell_lvlh_t * allocPoint(int val)
     return new_cell;
 }
 
+
+
 /** TO DO
  * @brief construire un arbre avec lvlh a partir de representation prefixee
  * @param [in] tabEltPref tableau des elements de la representation prefixee
  * @param [in] nbRacines nombre de racines de l'arborescence
  * @return : 
- *     - NULL si l'arbre resultatnt est vide
+ *     - NULL si l'arbre resultant est vide
  *     - l'adresse de la racine de l'arbre sinon
 */
 
+cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
+{
+    cell_lvlh_t * cell;
+    cell_lvlh_t * cell_prec = NULL;
+    cell_lvlh_t ** cell_lt;
+
+    pile_t * p            = initPile(NB_ELTPREF_MAX);
+    int stop            = 0;
+    int index           = 0;
+    int code;
+
+    eltType_pile elt;
+    eltType_pile elt_lt;
+
+    elt.cour = allocPoint(tabEltPref[index].val);
+    elt.prec = cell_prec;
+    elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
+    empiler(p, &elt, &code);
+    index++;
+
+
+    cell_lvlh_t * root = elt.cour;
+
+    while (!stop)
+    {
+        while (nbRacines != 0 && elt.nb_Fils_ou_Freres)
+        {
+            elt.prec = elt.cour;
+            cell     = allocPoint(tabEltPref[index].val);
+            elt.cour = cell;
+            elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
+            //printf(" [ %c %c %d ] \n", elt.cour->val, elt.prec->val, elt.nb_Fils_ou_Freres);
+            if (elt.nb_Fils_ou_Freres){
+                //printf("Empilement de : %c %d \n", elt.cour->val, elt.nb_Fils_ou_Freres);
+                empiler(p, &elt, &code);
+            }
+            index++;
+            //printf("INDEX : %d\n", index);
+            
+        }
+        
+        if (!estVidePile(p)){
+            depiler(p, &elt_lt, &code);
+            //printf("* Depilement de : %c %d \n", elt_lt.cour->val, elt_lt.nb_Fils_ou_Freres);
+            cell = elt.cour;
+            elt_lt.nb_Fils_ou_Freres--;
+
+            if (elt_lt.cour->lv == NULL)
+            {
+                elt_lt.cour->lv = cell;
+               //printf("* Liaison fils avec : %c\n", cell->val);
+            }else{
+                cell_lt = &elt_lt.cour->lv;
+                while (*cell_lt){
+                    //printf("--> %c \n", (*cell_lt)->val);
+                    cell_lt = &(*cell_lt)->lh;
+                } 
+                *cell_lt = cell;
+                //printf("* Liaison frère avec : %c\n", (*cell_lt)->val);
+            }
+
+            if (elt_lt.nb_Fils_ou_Freres){
+                //printf("* Empilement de : %c %d \n", elt_lt.cour->val, elt_lt.nb_Fils_ou_Freres);
+                empiler(p, &elt_lt, &code);
+            }
+            if (!estVidePile(p)){
+                elt = elt_lt;
+            }else if (nbRacines-- && nbRacines != 0){
+                cell_lt = &elt_lt.cour;
+                while (*cell_lt){
+                    //printf("--> %c \n", (*cell_lt)->val);
+                    cell_lt = &(*cell_lt)->lh;
+                }
+                elt.prec = NULL;
+                elt.cour = allocPoint(tabEltPref[index].val);
+                elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
+                *cell_lt = elt.cour;
+                //printf("* Liaison %c frère avec : %c\n", elt_lt.cour->val, (*cell_lt)->val);
+                empiler(p, &elt, &code);
+                index++;
+            }
+        }else{
+            stop = 1;
+        }
+    }
+    free(cell_prec);
+    libererPile(&p);
+    return root;
+}
+
+
+/*
+// pref2lvlh récursif
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
   cell_lvlh_t * cell = NULL;
@@ -133,17 +228,30 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
   
   return cell;
 }
+*/
 
+
+/* **** Fonctions annexe ***** */
 // Affichage prefixe
-void afficheArbre(cell_lvlh_t * root)
+void affichePrefArbre(cell_lvlh_t * root)
 {
     if (root){
         printf("%c", root->val);
-        afficheArbre(root->lv);
-        afficheArbre(root->lh);
+        affichePrefArbre(root->lv);
+        affichePrefArbre(root->lh);
     }
     
 }
+
+
+void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root){
+    if (root){
+        fprintf(file, "%c ", root->val);
+        affichePrefArbre_Fichier(file, root->lv);
+        affichePrefArbre_Fichier(file, root->lh);
+    }
+}
+/********************************/
 
 /** TO DO
  * @brief liberer les blocs memoire d'un arbre

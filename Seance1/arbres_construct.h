@@ -14,7 +14,7 @@
  * @param [in, out] nbEltsPref l'adresse memoire contenant le nombre des elements du tabEltPref
  * @return le nombre de racines
  */
-int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int * nbEltsPref);
+int lirePref_fromFileName(char *, eltPrefPostFixee_t *, int *);
 
 /** TO DO
  * @brief afficher les elements de la representation prefixee sur un flux de sortie
@@ -39,16 +39,18 @@ cell_lvlh_t * allocPoint(int);
  *     - NULL si l'arbre resultatnt est vide
  *     - l'adresse de la racine de l'arbre sinon
 */
-cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines);
+cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t *, int);
 
 /** TO DO
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
-// libererArbre();
+void libererArbre(cell_lvlh_t **);
 
 
-void afficheArbre(cell_lvlh_t * root);
 
+// Fonctions annexe
+void affichePrefArbre(cell_lvlh_t *);
+void affichePrefArbre_Fichier(FILE *, cell_lvlh_t *);
 
 #endif
