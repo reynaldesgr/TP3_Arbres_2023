@@ -68,6 +68,7 @@ void printPostfixee(FILE * stream, cell_lvlh_t * racine)
     }
 
     fprintf(stream, "%d\n", nbRacines);
-
+    
+    free(cell);
     libererPile(&p);
 }
