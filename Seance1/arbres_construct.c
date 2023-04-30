@@ -92,7 +92,7 @@ cell_lvlh_t * allocPoint(int val)
 
 
 
-/** preflÉlvlh
+/** pref2lvlh
  * @brief construire un arbre avec lvlh a partir de representation prefixee
  * @param [in] tabEltPref tableau des elements de la representation prefixee
  * @param [in] nbRacines nombre de racines de l'arborescence
