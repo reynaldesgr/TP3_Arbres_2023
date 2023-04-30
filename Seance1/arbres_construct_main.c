@@ -92,6 +92,8 @@ TEST(pref2lvlh1_exTP) {
 	fclose(file);
 	
 	CHECK (0 == strcmp(buffer, "A B E J D H G C F K M T I "));
+	
+	libererArbre(&racine);
 }
 
 END_TEST_GROUP(ARBRE_CONSTRUCT)

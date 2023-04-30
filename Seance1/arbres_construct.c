@@ -37,6 +37,8 @@ int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int 
         }
     }
 
+    fclose(file);
+
     return nbRacines;
 }
 
@@ -105,10 +107,9 @@ cell_lvlh_t * allocPoint(int val)
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
     cell_lvlh_t * cell;
-    cell_lvlh_t * cell_prec = NULL;
     cell_lvlh_t ** cell_lt;
 
-    pile_t * p            = initPile(NB_ELTPREF_MAX);
+    pile_t * p          = initPile(NB_ELTPREF_MAX);
     int stop            = 0;
     int index           = 0;
     int code;
@@ -117,7 +118,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
     eltType_pile elt_lt;
 
     elt.cour = allocPoint(tabEltPref[index].val);
-    elt.prec = cell_prec;
+    elt.prec = NULL;
     elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
     empiler(p, &elt, &code);
     index++;
@@ -140,7 +141,6 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             }
             index++;
             //printf("INDEX : %d\n", index);
-            
         }
         
         if (!estVidePile(p)){
@@ -187,7 +187,6 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             stop = 1;
         }
     }
-    free(cell_prec);
     libererPile(&p);
     return root;
 }
@@ -260,21 +259,53 @@ void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root){
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
+
+
 void libererArbre(cell_lvlh_t ** adrPtRacine)
 {
-    cell_lvlh_t * cour;
+    pile_t * p            = initPile(NB_ELTPREF_MAX);
+    int stop            = 0;
+    int index           = 0;
+    int code;
+    eltType_pile elt;
+    cell_lvlh_t * elt_to_free;
+    elt.cour = *adrPtRacine;
+
 
     if (*adrPtRacine)
     {
-        cour = *adrPtRacine;
-        if (cour->lv){
-            libererArbre(&cour->lv);
-        }
-        
-        free(cour);
+        while (!stop)
+        {
+            while (elt.cour->lv)
+            {
+                empiler(p, &elt, &code);
+                elt.cour = elt.cour->lv;
+            }
 
-        if(cour->lh){
-            libererArbre(&cour->lh);
+            while (elt.cour->lh)
+            {
+                empiler(p, &elt, &code);
+                elt.cour = elt.cour->lh;
+            }
+            
+            elt_to_free = elt.cour;
+            if (elt.cour->lv){
+                continue;
+            }else if (!estVidePile(p)){
+                    depiler(p, &elt, &code);
+                    if (elt.cour->lh == elt_to_free){
+                        elt.cour->lh = NULL;
+                    }else if(elt.cour->lv == elt_to_free){
+                        elt.cour->lv = NULL;
+                    }
+                    free(elt_to_free);
+            }else{
+                stop = 1;
+            }
+
         }
     }
+
+    free(elt_to_free);
+    libererPile(&p);
 }
