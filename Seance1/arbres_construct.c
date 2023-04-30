@@ -92,7 +92,7 @@ cell_lvlh_t * allocPoint(int val)
 
 
 
-/** pref2lvlh
+/** prefl2lvlh
  * @brief construire un arbre avec lvlh a partir de representation prefixee
  * @param [in] tabEltPref tableau des elements de la representation prefixee
  * @param [in] nbRacines nombre de racines de l'arborescence
@@ -134,52 +134,49 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             cell     = allocPoint(tabEltPref[index].val);
             elt.cour = cell;
             elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
-            //printf(" [ %c %c %d ] \n", elt.cour->val, elt.prec->val, elt.nb_Fils_ou_Freres);
-            if (elt.nb_Fils_ou_Freres){
-                //printf("Empilement de : %c %d \n", elt.cour->val, elt.nb_Fils_ou_Freres);
+
+            if (elt.nb_Fils_ou_Freres)
+            {
                 empiler(p, &elt, &code);
             }
             index++;
-            //printf("INDEX : %d\n", index);
         }
         
-        if (!estVidePile(p)){
+        if (!estVidePile(p))
+        {
             depiler(p, &elt_lt, &code);
-            //printf("* Depilement de : %c %d \n", elt_lt.cour->val, elt_lt.nb_Fils_ou_Freres);
+
             cell = elt.cour;
             elt_lt.nb_Fils_ou_Freres--;
 
             if (elt_lt.cour->lv == NULL)
             {
                 elt_lt.cour->lv = cell;
-               //printf("* Liaison fils avec : %c\n", cell->val);
+
             }else{
                 cell_lt = &elt_lt.cour->lv;
                 while (*cell_lt){
-                    //printf("--> %c \n", (*cell_lt)->val);
                     cell_lt = &(*cell_lt)->lh;
                 } 
                 *cell_lt = cell;
-                //printf("* Liaison frère avec : %c\n", (*cell_lt)->val);
             }
 
             if (elt_lt.nb_Fils_ou_Freres){
-                //printf("* Empilement de : %c %d \n", elt_lt.cour->val, elt_lt.nb_Fils_ou_Freres);
                 empiler(p, &elt_lt, &code);
             }
             if (!estVidePile(p)){
                 elt = elt_lt;
             }else if (nbRacines-- && nbRacines != 0){
                 cell_lt = &elt_lt.cour;
-                while (*cell_lt){
-                    //printf("--> %c \n", (*cell_lt)->val);
+                while (*cell_lt)
+                {
                     cell_lt = &(*cell_lt)->lh;
                 }
                 elt.prec = NULL;
                 elt.cour = allocPoint(tabEltPref[index].val);
                 elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
                 *cell_lt = elt.cour;
-                //printf("* Liaison %c frère avec : %c\n", elt_lt.cour->val, (*cell_lt)->val);
+
                 empiler(p, &elt, &code);
                 index++;
             }
@@ -187,6 +184,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             stop = 1;
         }
     }
+
     libererPile(&p);
     return root;
 }
