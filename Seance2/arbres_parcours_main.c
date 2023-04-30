@@ -61,6 +61,7 @@ TEST(getNbFils_ou_Freres) {
 	printf("H = %c\n", racine->lv->lh->lh->val);
 	CHECK( 1 == getNbFils_ou_Freres(racine->lv->lh->lh->lv) ); // 1 fils
 
+	fclose(file);
 	libererArbre(&racine);
 }
 
