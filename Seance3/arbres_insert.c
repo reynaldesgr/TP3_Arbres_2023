@@ -17,10 +17,30 @@
  *   - l'adresse du point contenant v si v existe dans l'arborescence
  *   - NULL, sinon
  */
-//  rechercher_v()
-// {
-// // TO DO
-// }
+cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
+    
+    pile_t * p = initPile(NB_ELTPREF_MAX);
+
+    eltType_pile elt;
+    elt.cour = root;
+
+    int code;
+
+    while (elt.cour && elt.cour->val != v)
+    {
+        empiler(p, &elt, &code);
+        elt.cour = elt.cour->lv;
+
+        while (elt.cour && !estVidePile(p)){
+            depiler(p, &elt, &code);
+            elt.cour = elt.cour->lh;
+        }
+    }
+
+    libererPile(&p);
+
+    return elt.cour;
+}
 
 /**
  * @brief rechercher le double prec de w dans une liste de fils

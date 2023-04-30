@@ -15,7 +15,8 @@
  *   - l'adresse du point contenant v si v existe dans l'arborescence
  *   - NULL, sinon
  */
-// rechercher_v();
+
+cell_lvlh_t * rechercher_v(cell_lvlh_t *, char);
 
 /** TO DO
  * @brief rechercher le double prec de w dans une liste de fils

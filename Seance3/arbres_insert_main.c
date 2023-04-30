@@ -9,7 +9,7 @@
 #include "../eltsArbre.h"
 #include "../Seance1/arbres_construct.h"
 #include "arbres_insert.h"
-#include "../../teZZt.h"
+#include "../teZZt.h"
 
 
 BEGIN_TEST_GROUP(ARBRE_INSERT)
@@ -26,7 +26,7 @@ TEST(nouvCell) {
 	free(new);
 }
 
-/*
+
 TEST(rechercher_v) {
 	int nbRacines = 0;
 	int nbEltsPref = 0;
@@ -52,6 +52,7 @@ TEST(rechercher_v) {
 	libererArbre(&racine);
 }
 
+/*
 TEST(rechercherPrecFilsTries) {
 	int nbRacines = 0;
 	int nbEltsPref = 0;
