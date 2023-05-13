@@ -7,9 +7,12 @@
 #include <string.h>
 #include "../pile.h"
 #include "../eltsArbre.h"
+// Rajout
+#include "../Seance2/arbres_parcours.h"
 #include "../Seance1/arbres_construct.h"
 #include "arbres_insert.h"
 #include "../teZZt.h"
+
 
 
 BEGIN_TEST_GROUP(ARBRE_INSERT)
@@ -52,7 +55,7 @@ TEST(rechercher_v) {
 	libererArbre(&racine);
 }
 
-/*
+
 TEST(rechercherPrecFilsTries) {
 	int nbRacines = 0;
 	int nbEltsPref = 0;
@@ -67,6 +70,7 @@ TEST(rechercherPrecFilsTries) {
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
 	pere = rechercher_v(racine, 'F');
+
 	REQUIRE( NULL != pere );
 	CHECK( 'F' == pere->val );
 
@@ -80,9 +84,33 @@ TEST(rechercherPrecFilsTries) {
 }
 
 TEST(insererTrie) {
-// TO DO
+	int nbRacines = 0;
+	int nbEltsPref = 0;
+	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+	cell_lvlh_t *racine = NULL;
+
+	int realisation;
+
+	printf("\033[34m\nrechercherPrecFilsTries :");
+	printf("\033[0m\n");
+	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
+	racine = pref2lvlh(tabEltPref, nbRacines);
+
+	// Cas : insertion fin LH
+	realisation = insererTrie(racine, 'B', 'Z');
+	CHECK(1 == realisation);
+	
+	// Cas : insertion début LH (lv)
+	realisation = insererTrie(racine, 'E', 'F');
+	printPostfixee(stdout, racine);
+	CHECK(1 == realisation);
+
+	// Cas : insertion entre 2 fils
+	realisation = insererTrie(racine, 'F',  'L');
+	printPostfixee(stdout, racine);
+	CHECK(1 == realisation);
 }
-*/
+
 END_TEST_GROUP(ARBRE_INSERT)
 
 int main(void) {

@@ -9,7 +9,7 @@ DIRUTEST = ../
 DIRCOMM = ../
 
 #liste des fichiers source
-SRC = $(wildcard $(DIRCOMM)*.c *.c)  ../Seance1/arbres_construct.c
+SRC = $(wildcard $(DIRCOMM)*.c *.c)  ../Seance1/arbres_construct.c ../Seance2/arbres_parcours.c
 
 HEADERS = $(wildcard $(DIRCOMM)*.h *.h)
 

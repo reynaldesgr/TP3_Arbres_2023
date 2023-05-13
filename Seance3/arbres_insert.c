@@ -9,6 +9,10 @@
 #include "../eltsArbre.h"
 #include "arbres_insert.h"
 
+// Rajout
+#include "../Seance1/arbres_construct.h"
+
+
 
 /**
  * @brief rechercher un point de valeur v
@@ -31,7 +35,7 @@ cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
         empiler(p, &elt, &code);
         elt.cour = elt.cour->lv;
 
-        while (elt.cour && !estVidePile(p)){
+        while (elt.cour == NULL && !estVidePile(p)){
             depiler(p, &elt, &code);
             elt.cour = elt.cour->lh;
         }
@@ -48,19 +52,55 @@ cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
  * @param [in] w la valeur a inserer
  * @return l'adresse du pointeur prec apres lequel w doit etre inseree
  */
-//  rechercherPrecFilsTries()
-// {
-// // TO DO
-// }
+cell_lvlh_t ** rechercherPrecFilsTries(cell_lvlh_t * adrPere, char w)
+{
+    cell_lvlh_t ** pprec;
+    if (adrPere->lv != NULL)
+    {
+        pprec = &(adrPere->lv);
+
+        while (*pprec != NULL && (*pprec)->val < w)
+        {
+            pprec = &(*pprec)->lh;
+        }
+    }
+    else
+    {
+        pprec = &adrPere;
+    }
+    return pprec;
+}
 
 /** TO DO
  * @brief inserer une valeur w dans les fils d'un point de valeur v
- * @param [in] racine la racine de l'arborescence
+ * @param [in, out] racine la racine de l'arborescence
  * @param [in] v la valeur d'un point auquel on va inserer la valeur w en fils
  * @param [in] w la valeur a inserer
  * @return 1 - insertion realisee; 0 - insertion n'a pas ete realisee
  */
-//  insererTrie()
-// {
-// // TO DO
-// }
+int insererTrie(cell_lvlh_t * racine, char v, char w)
+{
+    cell_lvlh_t * pere = rechercher_v(racine, v);
+    
+    int realisation = 0;
+
+    if (pere != NULL)
+    {
+        cell_lvlh_t ** pprec = rechercherPrecFilsTries(pere, w);
+        if (*pprec){
+            printf("pprec : %c", (*pprec)->val);
+        }
+        cell_lvlh_t * nouv = allocPoint(w);
+        if (nouv != NULL)
+        {
+            nouv->val = w;
+            nouv->lv = NULL;
+            nouv->lh = *pprec;
+            *pprec = nouv;
+            realisation = 1;
+        }
+    }
+
+
+    return realisation;
+}
