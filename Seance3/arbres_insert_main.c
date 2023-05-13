@@ -80,14 +80,18 @@ TEST(rechercherPrecFilsTries) {
 
 // autres tests a ajouter
 
+	// Insertion en fin de la liste des fils de F
+	pprec = rechercherPrecFilsTries(pere, 'U');
+	REQUIRE(NULL == *pprec);
+
 	libererArbre(&racine);
 }
 
 TEST(insererTrie) {
-	int nbRacines = 0;
+	int nbRacines  = 0;
 	int nbEltsPref = 0;
 	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
-	cell_lvlh_t *racine = NULL;
+	cell_lvlh_t * racine = NULL;
 
 	int realisation;
 
@@ -101,7 +105,7 @@ TEST(insererTrie) {
 	CHECK(1 == realisation);
 	
 	// Cas : insertion début LH (lv)
-	realisation = insererTrie(racine, 'E', 'F');
+	realisation = insererTrie(racine, 'E', 'P');
 	printPostfixee(stdout, racine);
 	CHECK(1 == realisation);
 
@@ -109,6 +113,8 @@ TEST(insererTrie) {
 	realisation = insererTrie(racine, 'F',  'L');
 	printPostfixee(stdout, racine);
 	CHECK(1 == realisation);
+
+	libererArbre(&racine);
 }
 
 END_TEST_GROUP(ARBRE_INSERT)

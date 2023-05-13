@@ -14,7 +14,7 @@
 
 
 
-/**
+/** rechercher_v
  * @brief rechercher un point de valeur v
  * @param [in] racine pointeur vers la racine de l'arborescence 
  * @return 
@@ -46,7 +46,7 @@ cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
     return elt.cour;
 }
 
-/**
+/** rechercherPrecFilsTries
  * @brief rechercher le double prec de w dans une liste de fils
  * @param [in] adrPere l'adresse du pere
  * @param [in] w la valeur a inserer
@@ -55,23 +55,18 @@ cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
 cell_lvlh_t ** rechercherPrecFilsTries(cell_lvlh_t * adrPere, char w)
 {
     cell_lvlh_t ** pprec;
-    if (adrPere->lv != NULL)
-    {
-        pprec = &(adrPere->lv);
+    
+    pprec = &(adrPere->lv);
 
-        while (*pprec != NULL && (*pprec)->val < w)
-        {
-            pprec = &(*pprec)->lh;
-        }
-    }
-    else
+    while (*pprec != NULL && (*pprec)->val < w)
     {
-        pprec = &adrPere;
+        pprec = &(*pprec)->lh;
     }
+
     return pprec;
 }
 
-/** TO DO
+/** insererTrie
  * @brief inserer une valeur w dans les fils d'un point de valeur v
  * @param [in, out] racine la racine de l'arborescence
  * @param [in] v la valeur d'un point auquel on va inserer la valeur w en fils
@@ -87,10 +82,8 @@ int insererTrie(cell_lvlh_t * racine, char v, char w)
     if (pere != NULL)
     {
         cell_lvlh_t ** pprec = rechercherPrecFilsTries(pere, w);
-        if (*pprec){
-            printf("pprec : %c", (*pprec)->val);
-        }
         cell_lvlh_t * nouv = allocPoint(w);
+
         if (nouv != NULL)
         {
             nouv->val = w;
@@ -100,7 +93,6 @@ int insererTrie(cell_lvlh_t * racine, char v, char w)
             realisation = 1;
         }
     }
-
 
     return realisation;
 }
