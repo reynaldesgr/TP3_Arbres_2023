@@ -95,25 +95,65 @@ TEST(insererTrie) {
 
 	int realisation;
 
+	char buffer[1024];
+	FILE * file = fmemopen(buffer, 1024, "w");
+	REQUIRE (NULL != file);
+
 	printf("\033[34m\nrechercherPrecFilsTries :");
 	printf("\033[0m\n");
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
-	// Cas : insertion fin LH
+	// Cas 1 : insertion en fin de lien horizontal LH
+	printf("\n* Cas 1 : Insertion en fin de lien horizontal... \n");
 	realisation = insererTrie(racine, 'B', 'Z');
-	CHECK(1 == realisation);
-	
-	// Cas : insertion début LH (lv)
-	realisation = insererTrie(racine, 'E', 'P');
 	printPostfixee(stdout, racine);
-	CHECK(1 == realisation);
 
-	// Cas : insertion entre 2 fils
+	// Vérification Cas 1
+	printPostfixee(file, racine);
+	CHECK(1 == realisation);
+	fclose(file);
+	CHECK(0 == strcmp(buffer, "(E,0) (J,0) (Z,0) (B,3) (D,0) (G,0) (H,1) (A,3) (K,0) (M,0) (T,0) (F,3) (I,0) (C,2) 2\n"));
+	//-------------------------------------------------------------------------------------------------------------------------
+
+	// Cas 2 : insertion en début de lien horizontal LH
+	printf("\n* Cas 2 : Insertion en début de lien horizontal... \n");
+	file = fmemopen(buffer, 1024, "w");
+	realisation = insererTrie(racine, 'E', 'P');
+
+	// Vérification Cas 2
+	CHECK(1 == realisation);
+	printPostfixee(file, racine);
+	fclose(file);
+	CHECK(0 == strcmp(buffer, "(P,0) (E,1) (J,0) (Z,0) (B,3) (D,0) (G,0) (H,1) (A,3) (K,0) (M,0) (T,0) (F,3) (I,0) (C,2) 2\n"));
+
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Cas 3 : insertion entre 2 noeuds d'un lien horizontal LH
+	printf("\n* Cas 3 : Insertion entre 2 noeuds... \n");
+	file = fmemopen(buffer, 1024, "w");
 	realisation = insererTrie(racine, 'F',  'L');
 	printPostfixee(stdout, racine);
-	CHECK(1 == realisation);
 
+	// Vérification Cas 3
+	printPostfixee(file, racine);
+	CHECK(1 == realisation);
+	fclose(file);
+	CHECK(0 == strcmp(buffer, "(P,0) (E,1) (J,0) (Z,0) (B,3) (D,0) (G,0) (H,1) (A,3) (K,0) (L,0) (M,0) (T,0) (F,4) (I,0) (C,2) 2\n"));
+
+	//-------------------------------------------------------------------------------------------------------------------------
+	// Cas 4 : insertion à partir d'un noeud inexistant
+	printf("\n* Cas 4 : Insertion à partir d'un noeud inexistant... \n");
+	realisation = insererTrie(racine, '9', 'T');
+	printPostfixee(stdout, racine);
+
+	// Vérification Cas 4
+	printPostfixee(file, racine);
+	CHECK(0 == realisation);
+	fclose(file);
+	// L'arbre reste inchangé 
+	CHECK(0 == strcmp(buffer, "(P,0) (E,1) (J,0) (Z,0) (B,3) (D,0) (G,0) (H,1) (A,3) (K,0) (L,0) (M,0) (T,0) (F,4) (I,0) (C,2) 2\n"));
+
+	// Libération
 	libererArbre(&racine);
 }
 
