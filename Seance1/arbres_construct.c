@@ -106,87 +106,48 @@ cell_lvlh_t * allocPoint(int val)
 
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
-    cell_lvlh_t * cell;
-    cell_lvlh_t ** cell_lt;
 
-    pile_t * p          = initPile(NB_ELTPREF_MAX);
-    int stop            = 0;
-    int index           = 0;
-    int code;
+    int index = 0;
+    int code; 
+
+    pile_t * p = initPile(NB_ELTPREF_MAX);
+
+    cell_lvlh_t * adrTete = NULL;
+    cell_lvlh_t ** pprec  = &adrTete;
+    cell_lvlh_t * nouv;
 
     eltType_pile elt;
-    eltType_pile elt_lt;
+    
+    int nb_fouf = nbRacines;
 
-    elt.cour = allocPoint(tabEltPref[index].val);
-    elt.prec = NULL;
-    elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
-    empiler(p, &elt, &code);
-    index++;
-
-
-    cell_lvlh_t * root = elt.cour;
-
-    while (!stop)
+    while (nb_fouf > 0 || !estVidePile(p))
     {
-        while (nbRacines != 0 && elt.nb_Fils_ou_Freres)
-        {
-            elt.prec = elt.cour;
-            cell     = allocPoint(tabEltPref[index].val);
-            elt.cour = cell;
-            elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
+        if (nb_fouf > 0){
+            nouv = allocPoint(tabEltPref[index].val);
+            *pprec   = nouv;
+            
+            elt.cour = nouv;
+            elt.nb_Fils_ou_Freres = nb_fouf - 1;
 
-            if (elt.nb_Fils_ou_Freres)
-            {
-                empiler(p, &elt, &code);
-            }
+            empiler(p, &elt, &code);
+
+            pprec = &nouv->lv;
+            nb_fouf = tabEltPref[index].nbFils;
             index++;
-        }
-        
-        if (!estVidePile(p))
-        {
-            depiler(p, &elt_lt, &code);
 
-            cell = elt.cour;
-            elt_lt.nb_Fils_ou_Freres--;
-
-            if (elt_lt.cour->lv == NULL)
-            {
-                elt_lt.cour->lv = cell;
-
-            }else{
-                cell_lt = &elt_lt.cour->lv;
-                while (*cell_lt){
-                    cell_lt = &(*cell_lt)->lh;
-                } 
-                *cell_lt = cell;
-            }
-
-            if (elt_lt.nb_Fils_ou_Freres){
-                empiler(p, &elt_lt, &code);
-            }
-            if (!estVidePile(p)){
-                elt = elt_lt;
-            }else if (nbRacines-- && nbRacines != 0){
-                cell_lt = &elt_lt.cour;
-                while (*cell_lt)
-                {
-                    cell_lt = &(*cell_lt)->lh;
-                }
-                elt.prec = NULL;
-                elt.cour = allocPoint(tabEltPref[index].val);
-                elt.nb_Fils_ou_Freres = tabEltPref[index].nbFils;
-                *cell_lt = elt.cour;
-
-                empiler(p, &elt, &code);
-                index++;
-            }
         }else{
-            stop = 1;
+            if (!estVidePile(p))
+            {
+                depiler(p, &elt, &code);
+                pprec = &elt.cour->lh;
+                nb_fouf = elt.nb_Fils_ou_Freres;
+            }
         }
     }
 
     libererPile(&p);
-    return root;
+
+    return adrTete;
 }
 
 
