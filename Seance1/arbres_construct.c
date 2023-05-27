@@ -154,7 +154,7 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             if (!estVidePile(p)) 
             {
                 // Recuperer le sommet de la pile 
-                depiler(p, &elt, &code);
+                elt = *(depiler(p, &code));
 
                 // Faire pointer pprec vers le frere de elt.cour pour continuer le chainage
                 pprec = &elt.cour->lh;
@@ -280,12 +280,15 @@ void libererArbre(cell_lvlh_t ** adrPtRacine)
                 continue;
             }else if (!estVidePile(p)){ // Si la pile est NON vide
 
-                    depiler(p, &elt, &code); // Depiler
+                    elt = *(depiler(p, &code)); // Depiler
 
                     // Mise a NULL de lh et lv du noeud courant
-                    if (elt.cour->lh == elt_to_free){
+                    if (elt.cour->lh == elt_to_free)
+                    {
                         elt.cour->lh = NULL;
-                    }else if(elt.cour->lv == elt_to_free){
+                        
+                    }else if(elt.cour->lv == elt_to_free)
+                    {
                         elt.cour->lv = NULL;
                     }
 
