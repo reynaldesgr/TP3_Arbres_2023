@@ -18,13 +18,13 @@
 
 int getNbFils_ou_Freres(cell_lvlh_t * ptCell)
 {
-    cell_lvlh_t * cour = ptCell;
-    int           nb   = 0;
+    cell_lvlh_t * cour = ptCell;        // Pointeur vers la cellule courante
+    int           nb   = 0;             // Nombre de fils ou freres
 
-    while (cour)
+    while (cour)    // Si courant non null, on continue de compter
     {
-        nb++;
-        cour = cour->lh;
+        nb++;   
+        cour = cour->lh;    // Deplacement horizontal 
     }
 
     return nb;
@@ -40,30 +40,34 @@ int getNbFils_ou_Freres(cell_lvlh_t * ptCell)
 
 void printPostfixee(FILE * stream, cell_lvlh_t * racine)
 {
-    pile_t * p            = initPile(NB_ELTPREF_MAX);
-    cell_lvlh_t * cell    = racine;
+    pile_t * p            = initPile(NB_ELTPREF_MAX); // Initialisation de la pile
+    cell_lvlh_t * cell    = racine; 
+
     int         stop      = 0;
     int         code;
-    int         nbRacines = getNbFils_ou_Freres(racine);
+
+    int         nbRacines = getNbFils_ou_Freres(racine); // On recupere le nombre de racines
+
+    // On construit un element de type pile stockant le noeud courant
     eltType_pile elt;
     elt.cour = cell;
 
     while (!stop)
     {
-        while (elt.cour != NULL)
+        while (elt.cour != NULL) // Si courant non null
         {
-            elt.nb_Fils_ou_Freres = getNbFils_ou_Freres(elt.cour->lv);
-            empiler(p, &elt, &code);
-            elt.cour = elt.cour->lv;
+            elt.nb_Fils_ou_Freres = getNbFils_ou_Freres(elt.cour->lv); // On recupere son nombre de fils
+            empiler(p, &elt, &code);    // Empiler le noeud courant avec son nombre de fils
+            elt.cour = elt.cour->lv;   // Deplacement vertical pour le parcours en profondeur
         }
 
-        if (!estVidePile(p))
+        if (!estVidePile(p))    // Si la pile est NON vide => courant null, on affiche le sommet de la pile
         {
-            depiler(p, &elt, &code);
+            depiler(p, &elt, &code); 
             fprintf(stream, "(%c,%d) ", elt.cour->val, elt.nb_Fils_ou_Freres);
-            elt.cour = elt.cour->lh;
+            elt.cour = elt.cour->lh; // Deplacement horizontal a partir du noeud au sommet de la pile
         }else{
-            stop = 1;
+            stop = 1;       // On a explore tout les noeuds => termine 
         }
     }
 
