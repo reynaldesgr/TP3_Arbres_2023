@@ -41,7 +41,7 @@ cell_lvlh_t * rechercher_v(cell_lvlh_t * root, char v){
         elt.cour = elt.cour->lv; // Deplacement vertical pour effectuer le parcours en profondeur
 
         while (elt.cour == NULL && !estVidePile(p)){
-            depiler(p, &elt, &code);
+            elt = *(depiler(p, &code));
             elt.cour = elt.cour->lh; // Deplacement horizontal
         } 
     }
