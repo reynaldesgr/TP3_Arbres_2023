@@ -65,7 +65,7 @@ void empiler(pile_t * ptPile, eltType_pile * ptVal, int * code);
  *                     *code = 0 si reussi
  *                           = 1 si echec
  */
-void depiler(pile_t * ptPile, eltType_pile * ptRes, int * code);
+eltType_pile * depiler(pile_t * ptPile, int * code);
 
 
 #endif
