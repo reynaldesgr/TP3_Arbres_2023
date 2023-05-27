@@ -18,83 +18,145 @@
 BEGIN_TEST_GROUP(ARBRE_INSERT)
 
 TEST(nouvCell) {
+
+	printf("\n* Test 1 : Création d'une nouvelle cellule... \n");
 	cell_lvlh_t *new;
 
+	// Allocation nouveau noeud
 	new = allocPoint('A');
 	REQUIRE( NULL != new ); 
 	CHECK( 'A' == new->val );
 	CHECK( NULL == new->lv );
 	CHECK( NULL == new->lh );
 
+	// Libération
 	free(new);
 }
 
 
 TEST(rechercher_v) {
+
+	printf("\n* Test 2 : Recherche d'une valeur dans l'arbre (rechercher_v)... \n");
+
 	int nbRacines = 0;
 	int nbEltsPref = 0;
+
+	// Déclaration tableau
 	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
 	cell_lvlh_t *racine = NULL;
+
+	// Pere
 	cell_lvlh_t *pere = NULL;
 
 	printf("\033[35m\nrechercher_v :");
 	printf("\033[0m\n");
 
+	// Recuperation du nombre de racines / Stockage de l'arbre dans le tableau
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
+
+	// Stockage de l'arbre en mémoire / Récuperation de la racine
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
-	pere = rechercher_v(racine, 'X');   // valeur inexistante
+	pere = rechercher_v(racine, 'X'); // Valeur inexistante
 	CHECK( NULL == pere );
 
-	pere = rechercher_v(racine, 'A');   // valeur a la racine
+	pere = rechercher_v(racine, 'A'); // Valeur a la racine
 	REQUIRE( NULL != pere );
 	CHECK( 'A' == pere->val );
 
-// autres tests a ajouter
+	// Autre tests : 
+	pere = rechercher_v(racine, 'B'); // Valeur premier fils
+	REQUIRE (NULL != pere);
+	CHECK ('B' == pere->val);
 
+	pere = rechercher_v(racine, 'D'); // Valeur second fils (n fils)
+	CHECK('D' == pere->val);
+
+	pere = rechercher_v(racine, 'C'); // Valeur frere de la racine
+	CHECK('C' == pere->val);
+
+	// Libération
 	libererArbre(&racine);
 }
 
 
 TEST(rechercherPrecFilsTries) {
+
+	printf("\n* Test 3 : rechercherPrecFilsTries...\n");
+
 	int nbRacines = 0;
 	int nbEltsPref = 0;
+
+	// Declaration du tableau tabEltPref
 	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
 	cell_lvlh_t *racine = NULL;
+
+	// Pere
 	cell_lvlh_t *pere = NULL;
+
+	// Pointeur sur prec
 	cell_lvlh_t **pprec = NULL;
 
 	printf("\033[34m\nrechercherPrecFilsTries :");
 	printf("\033[0m\n");
+
+	// Récuperer le nombre de racines / Stockage de l'arbre dans le tableau
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
+
+	// Stockage de l'arbre / Récuperation de la racine
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
+	// Recherche de la valeur 'F' dans l'arbre
 	pere = rechercher_v(racine, 'F');
 
 	REQUIRE( NULL != pere );
 	CHECK( 'F' == pere->val );
 
+	// Recherche du prec ou inserer 'F'
 	pprec = rechercherPrecFilsTries(pere, 'A');
 	REQUIRE( NULL != *pprec );
 	CHECK( 'K' == (*pprec)->val );
 
-// autres tests a ajouter
+	// Autres tests : 
 
-	// Insertion en fin de la liste des fils de F
+	// Recherche : Insertion en fin de la liste des fils de F
 	pprec = rechercherPrecFilsTries(pere, 'U');
-	REQUIRE(NULL == *pprec);
+	CHECK (NULL == *pprec);
 
+	// Recherche : Insertion en début de la liste des fils de F
+	pprec = rechercherPrecFilsTries(pere, 'A');
+	REQUIRE (NULL != *pprec);
+	CHECK ('K' == (*pprec)->val);
+
+	// Recherche : Insertion à partir d'une feuille
+	pere = rechercher_v(racine, 'E');
+	pprec = rechercherPrecFilsTries(pere, 'R');
+	CHECK (NULL == *pprec);
+
+	// Liberation
 	libererArbre(&racine);
 }
 
 TEST(insererTrie) {
+
+	printf("\n* Test 4 : insererTrier...\n");
+
 	int nbRacines  = 0;
 	int nbEltsPref = 0;
+
+	// Declaration du tableau tabEltPref
 	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
 	cell_lvlh_t * racine = NULL;
 
 	int realisation;
 
+	// Buffer
 	char buffer[1024];
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE (NULL != file);
