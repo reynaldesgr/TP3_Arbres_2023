@@ -63,7 +63,7 @@ void printPostfixee(FILE * stream, cell_lvlh_t * racine)
 
         if (!estVidePile(p))    // Si la pile est NON vide => courant null, on affiche le sommet de la pile
         {
-            depiler(p, &elt, &code); 
+            elt = *(depiler(p, &code)); 
             fprintf(stream, "(%c,%d) ", elt.cour->val, elt.nb_Fils_ou_Freres);
             elt.cour = elt.cour->lh; // Deplacement horizontal a partir du noeud au sommet de la pile
         }else{

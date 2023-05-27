@@ -87,7 +87,7 @@ TEST(getNbFils_ou_Freres) {
 
 TEST(printPostfixee) {
 
-	printf("\n * Test 3 : printPostfixe...\n")
+	printf("\n * Test 3 : printPostfixe...\n");
 	int nbRacines = 0;
 	int nbEltsPref = 0;
 
@@ -124,7 +124,7 @@ TEST(printPostfixee) {
 	libererArbre(&racine);
 }
 
-printf("\n= Test parcours d'une arborescence sur différents cas =\n")
+printf("\n= Test parcours d'une arborescence sur différents cas =\n");
 
 // Cas 1 : Arbre vide
 TEST(CAS1)
