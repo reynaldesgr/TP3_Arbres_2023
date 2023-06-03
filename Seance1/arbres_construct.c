@@ -20,25 +20,34 @@
 
 int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int * nbEltsPref)
 {
-    FILE * file   = fopen(fileName, "r"); // Ouverture du fichier en mode lecture
+    FILE * file = fopen(fileName, "r"); // Ouverture du fichier en mode lecture
 
-    int index     = 0;  // Index du tableau
+    int index = 0;  // Index du tableau
     int nbRacines = 0;  // Nombre de racines
+    int booleen = 0; // 0 si lecture valide, 1 si invalide
 
-    if (file) // Si le fichier existe
+    if (file != NULL) // Si le fichier existe
     {
         fscanf(file, "%d ", &nbRacines); // On recupere le 1er caractere du fichier <=> correspondant au nombre de racines
 
-        while(!feof(file)) // Tant que la fin du fichier pas atteinte
+        while(booleen != 1 && !feof(file)) // Tant que la fin du fichier pas atteinte et qu'on ne lit pas une valeur erronee (nbFils < 0 ou val pas une lettre)
         {
             (*nbEltsPref)++; // On compte les elements
             fscanf(file, "%c %d%*c ", &tabEltPref[index].val, &tabEltPref[index].nbFils); // On stocke la valeur du noeud et son nombre de fils
+            
+            if (tabEltPref[index].val < 'A' || tabEltPref[index].val > 'Z' || tabEltPref[index].nbFils < 0)
+            {
+                booleen = 1;
+                nbRacines = 0;
+                fclose(file);
+            }
             index++; // Incrementation de index
         }
+        if (booleen == 0)
+        {
+            fclose(file); // Fermeture du fichier
+        }
     }
-
-    fclose(file); // Fermeture du fichier
-
     return nbRacines;
 }
 
@@ -77,16 +86,15 @@ void printTabEltPref(FILE * file, eltPrefPostFixee_t * tabEltPref, int nbEltsPre
  * @param [in] val la valeur du point
  * @return l'adresse du nouveau point 
  */
-
-cell_lvlh_t * allocPoint(int val)
+cell_lvlh_t * allocPoint(char val)
 {
-    cell_lvlh_t * new_cell; 
+    cell_lvlh_t * new_cell = (cell_lvlh_t *)malloc(sizeof(cell_lvlh_t)); //allocation d'un nouvelle cellule
 
-    if ((new_cell = malloc(sizeof(cell_lvlh_t))) != NULL)
+    if (new_cell != NULL) // si l'allocation s'est bien passee
     {
-        new_cell->val = val; 
-        new_cell->lh  = NULL;
-        new_cell->lv  = NULL;
+        new_cell->val = val; // attribution de la valeur
+        new_cell->lh  = NULL; // attribution du lien horizontal
+        new_cell->lv  = NULL; // attribution du lien vertical
     }
 
     return new_cell;
@@ -102,10 +110,7 @@ cell_lvlh_t * allocPoint(int val)
  *     - NULL si l'arbre resultant est vide
  *     - l'adresse de la racine de l'arbre sinon
 */
-
-
 // Iteratif (Pile)
-
 cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 {
 
@@ -127,10 +132,11 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
     
     int nb_fouf = nbRacines;
 
-    // Tant que le nombre de fils ou de freres non null OU pile non vide
+    // Tant que le nombre de fils ou de freres non nul OU pile non vide
     while (nb_fouf > 0 || !estVidePile(p))
     {
-        if (nb_fouf > 0){   // Si le noeud possede des fils
+        if (nb_fouf > 0) // Si le noeud possede des fils
+        {   
             nouv = allocPoint(tabEltPref[index].val); // Allocation cellule arbre
             *pprec   = nouv;    // Chainage de la nouvelle cellule avec le precedent
             
@@ -148,9 +154,10 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
             nb_fouf = tabEltPref[index].nbFils;
 
             // Incrementation de index
-            index++;
-
-        }else{  // Si nb_fouf = 0 ==> elt.cour est une feuille
+            index++;   
+        }
+        else
+        {  // Si nb_fouf = 0 ==> elt.cour est une feuille
             if (!estVidePile(p)) 
             {
                 // Recuperer le sommet de la pile 
@@ -170,48 +177,6 @@ cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
 
     return adrTete;
 }
-
-
-/*
-// pref2lvlh récursif
-
-cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines)
-{
-  cell_lvlh_t * cell = NULL;
-  cell_lvlh_t * cell_lt = NULL;
-  int nbFils = 0;
-
-    if ((nbFils = tabEltPref[index].nbFils) != 0){
-        cell = allocPoint(tabEltPref[index].val);
-        index++;
-        cell->lv = pref2lvlh(tabEltPref, 0);
-
-        nbFils--;
-        cell_lt = cell->lv;
-
-        while (nbFils)
-        {
-            index++;
-            cell_lt->lh = pref2lvlh(tabEltPref, 0);
-            cell_lt = cell_lt->lh;
-            nbFils--;
-        }
-
-        // si nbRacines > 0 : on se situe au niveau de la/des racines de la forêt
-        if (nbRacines){
-            index++;
-            cell->lh = pref2lvlh(tabEltPref, nbRacines);
-        }
-
-    }else{
-        cell = allocPoint(tabEltPref[index].val);
-        cell->lv = NULL;
-    }
-  
-  return cell;
-}
-*/
-
 
 /* **** Fonctions annexes ***** */
 // Affichage prefixe
@@ -239,8 +204,6 @@ void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root){
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
-
-
 void libererArbre(cell_lvlh_t ** adrPtRacine)
 {
     // Initialisation de la pile
@@ -304,6 +267,8 @@ void libererArbre(cell_lvlh_t ** adrPtRacine)
 
     // Liberation du pointeur sur la premiere racine
     free(elt_to_free);
+
+    *adrPtRacine = NULL;
 
     // Liberation de la pile
     libererPile(&p);

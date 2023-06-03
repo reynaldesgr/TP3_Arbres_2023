@@ -53,6 +53,23 @@ TEST(lirePref_fromFileName_exTP) {
 	
 	CHECK( 'I' == tabEltPref[nbEltsPref-1].val );
 	CHECK( 0 == tabEltPref[nbEltsPref-1].nbFils );
+
+	// Le fichier n'existe pas
+	nbEltsPref = 0;
+	nbRacines = lirePref_fromFileName("../not_exist.txt", tabEltPref, &nbEltsPref);
+	CHECK( 0 == nbRacines );
+	CHECK( 0 == nbEltsPref );
+	
+	// Le fichier est vide
+	nbRacines = lirePref_fromFileName("../pref_ex_TP_vide.txt", tabEltPref, &nbEltsPref);
+	CHECK ( 0 == nbRacines );
+	CHECK( 0 == nbEltsPref );
+
+	// Tout ou une partie du fichier est invalide
+	nbRacines = lirePref_fromFileName("../pref_ex_TP_foo.txt", tabEltPref, &nbEltsPref);
+	cell_lvlh_t * racine = pref2lvlh(tabEltPref, nbRacines);
+	CHECK (nbRacines == 0);
+	CHECK (NULL == racine);
 }
 
 
@@ -123,6 +140,13 @@ TEST(pref2lvlh1_exTP) {
 	
 	// Liberation de l'arbre
 	libererArbre(&racine);
+
+	CHECK(NULL == racine);
+
+	nbRacines = lirePref_fromFileName("../pref_ex_TP_foo.txt", tabEltPref, &nbEltsPref);
+	racine = pref2lvlh(tabEltPref, nbRacines);
+	CHECK (0 == nbRacines);
+	CHECK (NULL == racine);
 }
 
 END_TEST_GROUP(ARBRE_CONSTRUCT)

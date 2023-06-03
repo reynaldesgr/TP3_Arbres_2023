@@ -14,7 +14,7 @@
  * @param [in, out] nbEltsPref l'adresse memoire contenant le nombre des elements du tabEltPref
  * @return le nombre de racines
  */
-int lirePref_fromFileName(char *, eltPrefPostFixee_t *, int *);
+int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int * nbEltsPref);
 
 /** printTabEltPref
  * @brief afficher les elements de la representation prefixee sur un flux de sortie
@@ -22,14 +22,14 @@ int lirePref_fromFileName(char *, eltPrefPostFixee_t *, int *);
  * @param [in, out] tabEltPref tableau des elements de la representation prefixee
  * @param [in, out] nbEltsPref le nombre des elements du tabEltPref
  */
-void printTabEltPref(FILE *, eltPrefPostFixee_t *, int);
+void printTabEltPref(FILE * file, eltPrefPostFixee_t * tabEltPref, int nbEltsPref);
 
 /** allocPoint
  * @brief creer et initialiser un nouveau point de l'arborescence
  * @param [in] val la valeur du point de type char
  * @return l'adresse du nouveau point 
  */
-cell_lvlh_t * allocPoint(int);
+cell_lvlh_t * allocPoint(char val);
 
 /** pref2lvlh
  * @brief construire un arbre avec lvlh a partir de representation prefixee
@@ -39,18 +39,16 @@ cell_lvlh_t * allocPoint(int);
  *     - NULL si l'arbre resultatnt est vide
  *     - l'adresse de la racine de l'arbre sinon
 */
-cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t *, int);
+cell_lvlh_t * pref2lvlh(eltPrefPostFixee_t * tabEltPref, int nbRacines);
 
 /** libererArbre
  * @brief liberer les blocs memoire d'un arbre
  * @param [in] adrPtRacine l'adresse du pointeur de la racine d'un arbre
  */
-void libererArbre(cell_lvlh_t **);
-
-
+void libererArbre(cell_lvlh_t ** adrPtRacine);
 
 // Fonctions annexes
-void affichePrefArbre(cell_lvlh_t *);
-void affichePrefArbre_Fichier(FILE *, cell_lvlh_t *);
+void affichePrefArbre(cell_lvlh_t * root);
+void affichePrefArbre_Fichier(FILE * file, cell_lvlh_t * root);
 
 #endif
