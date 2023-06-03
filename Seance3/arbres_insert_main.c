@@ -225,15 +225,7 @@ TEST(insererTrie2)
 TEST(insererTrie3)
 {
 	int nbRacines  = 0;
-	int nbEltsPref = 0;
-
-	// Declaration du tableau tabEltPref
-	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
-
-	// Racine
-	cell_lvlh_t * racine = NULL;
-
-	int realisation;
+	int nbEltsPref = 0;fmemopen
 
 	// Buffer
 	char buffer[1024];
@@ -245,6 +237,7 @@ TEST(insererTrie3)
 
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
 	racine = pref2lvlh(tabEltPref, nbRacines);
+	fclose(file);
 
 	// Cas 3 : insertion entre 2 noeuds d'un lien horizontal LH
 	printf("\n* Cas 3 : Insertion entre 2 noeuds... \n");
