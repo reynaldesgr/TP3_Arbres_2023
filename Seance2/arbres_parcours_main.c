@@ -142,7 +142,7 @@ TEST(CAS1)
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
-	printf("\033[35m\nprintPostFixee :");
+	printf("\033[35m\nCas : Arbre vide :");
 	printf("\033[0m\n");
 
 	// Récuperer le nombre de racines / Stockage de l'arbre dans le tableau tabEltPref
@@ -154,10 +154,10 @@ TEST(CAS1)
 	fclose(file);
 }
 
-// Cas 2 : Parcours d'un arbre ne contenant que des racines (pas de lien verticaux LV)
+// Cas 2 : Parcours d'un arbre ne contenant que des liens horizontaux (pas de lien verticaux LV)
 TEST(CAS2)
 {
-	printf("* CAS 2 : Parcours d'un arbre ne contenant que des liens horizontaux...\n");
+	printf("\n* CAS 2 : Parcours d'un arbre ne contenant que des liens horizontaux...\n");
 
 	int nbRacines = 0;
 	int nbEltsPref = 0;
@@ -173,7 +173,7 @@ TEST(CAS2)
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE ( NULL != file);
 
-	printf("\033[35m\nprintPostFixee :");
+	printf("\033[35m\nCas : Arbre avec seulement des liens LH : ");
 	printf("\033[0m\n");
 
 	// Récupérer le nombre de racines / Stockage de l'arbre dans le tableau
@@ -186,10 +186,98 @@ TEST(CAS2)
 	// Stockage de l'arbre en mémoire / Récuperation de la racine
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
-	// Affichage de l'arbre sur stdout
+	// Affichage de l'arbre sur stdout + buffer
 	printPostfixee(stdout, racine);
+	printPostfixee(file, racine);
 
 	fclose(file);
+
+	CHECK( 0 == strcmp(buffer, "(A,0) (C,0) (D,0) 3\n"));
+	libererArbre(&racine);
+}
+
+
+// Cas 3 : Parcours d'un arbre ne contenant que des liens verticaux (pas de lien verticaux LH)
+TEST(CAS3)
+{
+	printf("\n* CAS 3 : Parcours d'un arbre ne contenant que des liens horizontaux...\n");
+
+	int nbRacines = 0;
+	int nbEltsPref = 0;
+
+	// Déclaration du tableau
+	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
+	cell_lvlh_t *racine = NULL;
+	
+	// Buffer
+	char buffer[1024];
+	FILE * file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file);
+
+	printf("\033[35m\nCas : Arbre avec seulement des liens LV : ");
+	printf("\033[0m\n");
+
+	// Récupérer le nombre de racines / Stockage de l'arbre dans le tableau
+	nbRacines = lirePref_fromFileName("./files/arbre_test3.txt", tabEltPref, &nbEltsPref);
+	CHECK(1 == nbRacines);
+
+	// Affichage du tableau sur stdout
+	printTabEltPref(stdout, tabEltPref, nbEltsPref);
+
+	// Stockage de l'arbre en mémoire / Récuperation de la racine
+	racine = pref2lvlh(tabEltPref, nbRacines);
+
+	// Affichage de l'arbre sur stdout + buffer
+	printPostfixee(stdout, racine);
+	printPostfixee(file, racine);
+
+	fclose(file);
+
+	CHECK( 0 == strcmp(buffer, "(Z,0) (V,1) (U,1) (T,1) (R,1) (E,1) (Z,1) (B,1) (A,1) 1\n"));
+	libererArbre(&racine);
+}
+
+// Cas 4 : Arbre avec 1 seul element
+TEST(CAS4)
+{
+	printf("\n* CAS 3 : Parcours d'un arbre ne contenant que 1 seul element...\n");
+
+	int nbRacines = 0;
+	int nbEltsPref = 0;
+
+	// Déclaration du tableau
+	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
+	cell_lvlh_t *racine = NULL;
+	
+	// Buffer
+	char buffer[1024];
+	FILE * file = fmemopen(buffer, 1024, "w");
+	REQUIRE ( NULL != file);
+
+	printf("\033[35m\nCas : Arbre avec un seul/unique element : ");
+	printf("\033[0m\n");
+
+	// Récupérer le nombre de racines / Stockage de l'arbre dans le tableau
+	nbRacines = lirePref_fromFileName("./files/arbre_1elem.txt", tabEltPref, &nbEltsPref);
+	CHECK(1 == nbRacines);
+
+	// Affichage du tableau sur stdout
+	printTabEltPref(stdout, tabEltPref, nbEltsPref);
+
+	// Stockage de l'arbre en mémoire / Récuperation de la racine
+	racine = pref2lvlh(tabEltPref, nbRacines);
+
+	// Affichage de l'arbre sur stdout + buffer
+	printPostfixee(stdout, racine);
+	printPostfixee(file, racine);
+
+	fclose(file);
+
+	CHECK( 0 == strcmp(buffer, "(A,0) 1\n"));
 	libererArbre(&racine);
 }
 
