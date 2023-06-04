@@ -13,11 +13,11 @@
  */
 #define PILE_SZ 256
 
-/** TO DO
+/** Structure pile : pile_t
  * @struct pile_t
  * @brief definit la structure de donnees de la pile
  */
-// TO DO
+
 typedef struct pile
 {
     int taille;
@@ -26,7 +26,7 @@ typedef struct pile
 
 } pile_t;
 
-/** TO DO
+/** initPile
  * @brief Initialiser une pile du type pile_t
  *   - allocation de memoire pour une structure pile_t et un tableau de taille elements
  * @param [in] taille taille de la pile
@@ -34,20 +34,20 @@ typedef struct pile
  */
 pile_t * initPile(int t);
 
-/** TO DO
+/** libererPile
  * @brief Liberer les memoires occupees par la pile
  * @param [in, out] adrPtPile l'adresse du pointeur de la structure pile_t
  */
 void libererPile(pile_t ** adrPtPile);
 
-/** TO DO
+/** estVidePile
  * @brief Verifier si la pile est vide (aucun element dans la "base")
  * @param [in] ptPile l'adresse de la structure pile_t
  * @return 1 - vide, ou 0 - non vide
  */
 int estVidePile(pile_t * ptPile);
 
-/** TO DO
+/** empiler
  * @brief Entrer un element dans la pile
  * @param [in, out] ptPile l'adresse de la structure pile_t
  * @param [in] ptVal l'adresse de la valeur a empiler
@@ -57,7 +57,7 @@ int estVidePile(pile_t * ptPile);
  */
 void empiler(pile_t * ptPile, eltType_pile * ptVal, int * code);
 
-/** TO DO
+/** depiler
  * @brief Sortir un element de la pile
  * @param [in, out] ptPile l'adresse de la structure pile_t
  * @param [out] ptRes l'adresse de l'element sorti

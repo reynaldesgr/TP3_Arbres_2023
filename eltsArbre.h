@@ -5,14 +5,14 @@
 #ifndef __ELTSARBRE_H__
 #define __ELTSARBRE_H__
 
-/** TO DO
+/** NB_ELTPREF_MAX
  * @def NB_ELTPREF_MAX
  * @brief definir le nombre d'elements (couple valeur-nombre_de_fils) maximum 
  *        dans une representation prefixee ou postfixee
  */
 #define NB_ELTPREF_MAX 50
 
-/** TO DO
+/** Structure element pref/post fixee : eltPrefPostFixee_t
  * @struct eltPrefPostFixee_t
  * @brief definir la SDD pour les elements de la representation prefixee ou postfixee
  * 2 champs :
@@ -27,7 +27,7 @@ typedef struct eltPrefPostFixee_t
     
 } eltPrefPostFixee_t;
 
-/** TO DO
+/** Structure cellule : cell_lvlh_lt
  * @struct cell_lvlh_t
  * @brief Definir la structure des points/cellules pour la representation d'une arborescence en lv et lh
  * 3 champs :

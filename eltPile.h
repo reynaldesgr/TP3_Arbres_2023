@@ -7,7 +7,7 @@
 
 #include "eltsArbre.h"
 
-/** TO DO
+/** Structure element pile : eltType_pile
  * @struct eltType_pile
  * @brief definir la SDD des elements de pile
  * 3 champs :
@@ -24,11 +24,12 @@ typedef struct eltType_pile
     
 } eltType_pile;
 
-/** TO DO
+/** copyElt()
  * @brief Copier la valeur d'un element dans un autre emplacement
  * @param [in] xxx l'adresse de l'element a copier
  * @param [in] xxx l'adresse de la destination
  */
-// copyElt();
+
+void copyElt(eltType_pile * source, eltType_pile * destination);
 
 #endif
