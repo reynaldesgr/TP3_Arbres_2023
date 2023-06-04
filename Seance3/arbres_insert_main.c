@@ -141,6 +141,7 @@ TEST(rechercherPrecFilsTries) {
 	libererArbre(&racine);
 }
 
+// CAS 1 : Insertion fin LH
 TEST(insererTrie1) {
 
 	printf("\n* Test 4 : insererTrier...\n");
@@ -161,7 +162,7 @@ TEST(insererTrie1) {
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE (NULL != file);
 
-	printf("\033[34m\nrechercherPrecFilsTries :");
+	printf("\033[34m\nCas : insertion en fin de LH : ");
 	printf("\033[0m\n");
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
 	racine = pref2lvlh(tabEltPref, nbRacines);
@@ -182,7 +183,7 @@ TEST(insererTrie1) {
 	libererArbre(&racine);
 }
 
-
+// Cas 2 : Insertion debut LH
 TEST(insererTrie2)
 {
 	int nbRacines  = 0;
@@ -201,7 +202,7 @@ TEST(insererTrie2)
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE (NULL != file);
 
-	printf("\033[34m\nrechercherPrecFilsTries :");
+	printf("\033[34m\nCas : insertion en debut de LH :");
 	printf("\033[0m\n");
 
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
@@ -222,17 +223,26 @@ TEST(insererTrie2)
 
 }
 
+// Cas 3 : Insertion classique entre 2 noeuds
 TEST(insererTrie3)
 {
 	int nbRacines  = 0;
-	int nbEltsPref = 0;fmemopen
+	int nbEltsPref = 0;
+
+	// Declaration du tableau tabEltPref
+	eltPrefPostFixee_t tabEltPref[NB_ELTPREF_MAX];
+
+	// Racine
+	cell_lvlh_t * racine = NULL;
+
+	int realisation;
 
 	// Buffer
 	char buffer[1024];
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE (NULL != file);
 
-	printf("\033[34m\nrechercherPrecFilsTries :");
+	printf("\033[34m\nCas : insertion classique entre 2 noeuds :");
 	printf("\033[0m\n");
 
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
@@ -255,6 +265,7 @@ TEST(insererTrie3)
 	libererArbre(&racine);
 }
 
+// Cas 4 : Insertion a partir d'un noeud inexistant
 TEST(insererTrie4)
 {
 	int nbRacines  = 0;
@@ -273,13 +284,13 @@ TEST(insererTrie4)
 	FILE * file = fmemopen(buffer, 1024, "w");
 	REQUIRE (NULL != file);
 
-	printf("\033[34m\nrechercherPrecFilsTries :");
+	printf("\033[34m\nCas : insertion noeud inexistant :");
 	printf("\033[0m\n");
 
 	nbRacines = lirePref_fromFileName("../pref_exTP.txt", tabEltPref, &nbEltsPref);
 	racine = pref2lvlh(tabEltPref, nbRacines);
 
-	// Cas 4 : insertion à partir d'un noeud inexistant
+	// Cas 4 : insertion a partir d'un noeud inexistant
 	printf("\n* Cas 4 : Insertion à partir d'un noeud inexistant... \n");
 	realisation = insererTrie(racine, '9', 'T');
 	printPostfixee(stdout, racine);
