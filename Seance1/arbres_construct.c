@@ -26,7 +26,7 @@ int lirePref_fromFileName(char * fileName, eltPrefPostFixee_t * tabEltPref, int 
     int nbRacines = 0;  // Nombre de racines
     int booleen = 0; // 0 si lecture valide, 1 si invalide
 
-    if (file != NULL) // Si le fichier existe
+    if (file != NULL && !feof(file)) // Si le fichier existe et qu'il n'est pas vide
     {
         fscanf(file, "%d ", &nbRacines); // On recupere le 1er caractere du fichier <=> correspondant au nombre de racines
 
@@ -65,17 +65,23 @@ void printTabEltPref(FILE * file, eltPrefPostFixee_t * tabEltPref, int nbEltsPre
     // Si le fichier existe
     if (file)
     {
-        while (index < nbEltsPref) // Tant que tout les elements de tabEltPref ne sont pas parcourus
+        if (nbEltsPref == 0) // Arbre vide <=> Arbre sans elements
+        { 
+            fprintf(file, "%d ", nbEltsPref);
+        }
+        else
         {
-            fprintf(file, "(%c,%d)", tabEltPref[index].val, tabEltPref[index].nbFils); // Affichage du noeud
-            index++; // Incrementation de index
-
-            if (index == nbEltsPref){ // Si affichage du dernier noeud => retour a la ligne
-                fprintf(file, "\n");
-            }
-            else // Sinon => espace
+            while (index < nbEltsPref) // Tant que tout les elements de tabEltPref ne sont pas parcourus
             {
-                fprintf(file, " ");
+                fprintf(file, "(%c,%d)", tabEltPref[index].val, tabEltPref[index].nbFils); // Affichage du noeud
+                index++; // Incrementation de index
+                if (index == nbEltsPref){ // Si affichage du dernier noeud => retour a la ligne
+                    fprintf(file, "\n");
+                }
+                else // Sinon => espace
+                {
+                    fprintf(file, " ");
+                }
             }
         }
     }
@@ -218,7 +224,6 @@ void libererArbre(cell_lvlh_t ** adrPtRacine)
     cell_lvlh_t * elt_to_free;
 
     elt.cour = *adrPtRacine;
-
 
     if (*adrPtRacine)
     {
